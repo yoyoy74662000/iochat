@@ -3,11 +3,8 @@
 
 <head>
 	<title>Chat io</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<script
-			  src="https://code.jquery.com/jquery-3.3.1.min.js"
-			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-			  crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
 	<style type="text/css">
 		body{
@@ -21,7 +18,7 @@
 			<div class = "col-md-4">
 				<div class="well">
 					<h3>Online Users</h3>
-					<ul class="list-group" id="Users"></ul>
+					<ul class="list-group" id="users"></ul>
 				</div>
 			</div>
 
@@ -31,21 +28,18 @@
 				<form id="messageForm">
 					<div class="form-group">
 						<label>Enter Message</label>
-						<textarea class="form-control" id="Message"></textarea>
-						<br />
+						<textarea class="form-control" id="message"></textarea>
+						<br>
 						<input type="submit" class="btn btn-primary" value="Send Message">
 					</div>
-					
 				</form>
 			</div>
-			
 		</div>
-		
 	</div>
 
 	<script>
 		$(function(){
-			var socket = io.connect();
+			var socket = io();
 			var $messageForm = $('#messageForm');
 			var $message = $('#message');
 			var $chat = $('#chat');
@@ -54,9 +48,15 @@
 			$messageForm.submit(function(e){
 				e.preventDefault();
 				console.log('submitted');
-			})
+				socket.emit('send message', $message.val());
+				$message.val('');
+			});
+
+			socket.on('new message', function(data){
+				$chat.append('<div class = "well">'+data.msg+'</div>')
+			});
 		});
 	</script>
 
 </body>
-</html>>
+</html>

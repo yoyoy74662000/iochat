@@ -9,7 +9,7 @@
   "author": "Daniel Chiang",
   "license": "ISC",
   "dependencies": {
-    "socket.io": "*",
-    "express": "*"
+    "express": "*",
+    "socket.io": "^2.1.0"
   }
 }
