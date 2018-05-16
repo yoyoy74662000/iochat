@@ -14,3 +14,8 @@ console.log("Server Running...")
 app.get('/', function(req, res){
 	res.sendFile(__dirname + '/index.html'); 
 });
+
+io.socket.on('connnections', function(socket){
+	connnections.push(socket);
+	console.log("connected %s sockets connected")
+});
