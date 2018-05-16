@@ -15,7 +15,11 @@ app.get('/', function(req, res){
 	res.sendFile(__dirname + '/index.html'); 
 });
 
-io.socket.on('connnections', function(socket){
+io.sockets.on('connnections', function(socket){
 	connnections.push(socket);
-	console.log("connected %s sockets connected")
+	console.log("connected %s sockets connected", connnections.length);
+
+	//Disconnect
+	connnections.splice(connnections.indexOf(socket), 1);
+	console.log('Disconnected %s sockets connected', connnections.length);
 });
