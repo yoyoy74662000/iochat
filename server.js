@@ -3,7 +3,7 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
 
-user = [];
+users = [];
 connnections = [];
 
 server.listen(process.env.PORT || 3000);
@@ -15,11 +15,18 @@ app.get('/', function(req, res){
 	res.sendFile(__dirname + '/index.html'); 
 });
 
-io.sockets.on('connnections', function(socket){
+io.sockets.on('connnection', function(socket){
 	connnections.push(socket);
 	console.log("connected %s sockets connected", connnections.length);
 
 	//Disconnect
-	connnections.splice(connnections.indexOf(socket), 1);
-	console.log('Disconnected %s sockets connected', connnections.length);
+	sockets.on('disconnect', function(data){
+		connnections.splice(connnections.indexOf(socket), 1);
+		console.log('Disconnected %s sockets connected', connnections.length);
+	});	
+
+	socket.on('send message', function(data){
+		io.sockets.emit('new message', {msg: data});
+	});
+	
 });
